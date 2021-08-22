@@ -1,0 +1,22 @@
+{
+    "schemaVersion": 1,
+    "id": "redmenu",
+    "version": "1.0",
+    "name": "RedMenu",
+    "description": "RedMenu is a simple Fabric Kotlin library providing abstractions to simplify the creation of menu blocks.",
+    "authors": [
+        "RedGrapefruit09"
+    ],
+    "contact": {
+        "repo": "https://github.com/RedGrapefruit09/RedMenu"
+    },
+    "license": "MIT",
+    "icon": "assets/redmenu/icon.png",
+    "environment": "*",
+    "entrypoints": {},
+    "depends": {
+        "fabricloader": ">=0.11.6",
+        "fabric": "*",
+        "minecraft": "1.17.1"
+    }
+}
