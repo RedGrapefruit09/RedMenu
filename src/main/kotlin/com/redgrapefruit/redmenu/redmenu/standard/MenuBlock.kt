@@ -1,4 +1,4 @@
-package com.redgrapefruit.redmenu.redmenu
+package com.redgrapefruit.redmenu.redmenu.standard
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockRenderType

@@ -1,4 +1,4 @@
-package com.redgrapefruit.redmenu.redmenu
+package com.redgrapefruit.redmenu.redmenu.standard
 
 import com.mojang.blaze3d.systems.RenderSystem
 import net.minecraft.client.gui.screen.ingame.HandledScreen

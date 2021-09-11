@@ -1,4 +1,4 @@
-package com.redgrapefruit.redmenu.redmenu
+package com.redgrapefruit.redmenu.redmenu.libgui
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
@@ -9,24 +9,25 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 
 /**
- * An override of [Inventory] to make it easier for you to implement
+ * A reimplementation of defaulted inventory for use with LibGUI
  */
-interface ImplementedInventory : Inventory {
+interface DefaultedSidedInventory : SidedInventory {
     /**
-     * Retrieves the item list of this inventory.<br></br>
+     * Retrieves the item list of this inventory.
      * Must return the same instance every time it's called.
      */
-    val items: DefaultedList<ItemStack>
+    fun getItems(): DefaultedList<ItemStack>
 
     /**
      * Returns the inventory size.
      */
-    override fun size(): Int = items.size
+    override fun size(): Int {
+        return getItems().size
+    }
 
     /**
-     * Checks if the inventory is empty.<br></br>
-     *
-     * @return True if this inventory has only empty stacks, false otherwise.
+     * Checks if the inventory is empty.
+     * @return true if this inventory has only empty stacks, false otherwise.
      */
     override fun isEmpty(): Boolean {
         for (i in 0 until size()) {
@@ -41,17 +42,18 @@ interface ImplementedInventory : Inventory {
     /**
      * Retrieves the item in the slot.
      */
-    override fun getStack(slot: Int): ItemStack = items[slot]
+    override fun getStack(slot: Int): ItemStack {
+        return getItems()[slot]
+    }
 
     /**
      * Removes items from an inventory slot.
-     *
      * @param slot  The slot to remove from.
      * @param count How many items to remove. If there are less items in the slot than what are requested,
      * takes all items in that slot.
      */
-    override fun removeStack(slot: Int, count: Int): ItemStack {
-        val result = Inventories.splitStack(items, slot, count)
+    override fun removeStack(slot: Int, count: Int): ItemStack? {
+        val result = Inventories.splitStack(getItems(), slot, count)
         if (!result.isEmpty) {
             markDirty()
         }
@@ -60,21 +62,21 @@ interface ImplementedInventory : Inventory {
 
     /**
      * Removes all items from an inventory slot.
-     *
      * @param slot The slot to remove from.
      */
-    override fun removeStack(slot: Int): ItemStack = Inventories.removeStack(items, slot)
+    override fun removeStack(slot: Int): ItemStack? {
+        return Inventories.removeStack(getItems(), slot)
+    }
 
     /**
      * Replaces the current stack in an inventory slot with the provided stack.
-     *
-     * @param slot  The inventory slot of which to replace the [ItemStack].
-     * @param stack The replacing [ItemStack]. If the stack is too big for
+     * @param slot  The inventory slot of which to replace the itemstack.
+     * @param stack The replacing itemstack. If the stack is too big for
      * this inventory ([Inventory.getMaxCountPerStack]),
      * it gets resized to this inventory's maximum amount.
      */
     override fun setStack(slot: Int, stack: ItemStack) {
-        items[slot] = stack
+        getItems()[slot] = stack
         if (stack.count > maxCountPerStack) {
             stack.count = maxCountPerStack
         }
@@ -83,37 +85,39 @@ interface ImplementedInventory : Inventory {
     /**
      * Clears the inventory.
      */
-    override fun clear() = items.clear()
+    override fun clear() {
+        getItems().clear()
+    }
 
     /**
-     * Marks the state as dirty.<br></br>
-     * Must be called after changes in the inventory, so that the game can properly save.<br></br>
+     * Marks the state as dirty.
+     * Must be called after changes in the inventory, so that the game can properly save
      * the inventory contents and notify neighboring blocks of inventory changes.
      */
-    override fun markDirty() = Unit
+    override fun markDirty() {
+        // Override if you want behavior.
+    }
 
     /**
-     * Returns whether the player can use this inventory
-     *
-     * @return True/false
+     * @return true if the player can use the inventory, false otherwise.
      */
-    override fun canPlayerUse(player: PlayerEntity): Boolean = true
-}
+    override fun canPlayerUse(player: PlayerEntity?): Boolean {
+        return true
+    }
 
-interface ImplementedSidedInventory : SidedInventory, ImplementedInventory {
-    override fun canExtract(slot: Int, stack: ItemStack, dir: Direction): Boolean = true
+    override fun canExtract(slot: Int, stack: ItemStack?, dir: Direction?): Boolean = true
 
-    override fun canInsert(slot: Int, stack: ItemStack, dir: Direction?): Boolean = true
+    override fun canInsert(slot: Int, stack: ItemStack?, dir: Direction?): Boolean = true
 
     override fun getAvailableSlots(side: Direction): IntArray {
-        val output = mutableListOf<Int>()
-
+        val list = mutableListOf<Int>()
         var x = 0
-        items.forEach {
-            output += x
+
+        getItems().forEach { item ->
+            list += x
             ++x
         }
 
-        return output.toIntArray()
+        return list.toIntArray()
     }
 }
