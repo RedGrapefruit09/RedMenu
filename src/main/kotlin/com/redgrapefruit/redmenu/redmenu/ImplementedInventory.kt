@@ -3,8 +3,10 @@ package com.redgrapefruit.redmenu.redmenu
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.Inventory
+import net.minecraft.inventory.SidedInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.util.collection.DefaultedList
+import net.minecraft.util.math.Direction
 
 /**
  * An override of [Inventory] to make it easier for you to implement
@@ -96,4 +98,22 @@ interface ImplementedInventory : Inventory {
      * @return True/false
      */
     override fun canPlayerUse(player: PlayerEntity): Boolean = true
+}
+
+interface ImplementedSidedInventory : SidedInventory, ImplementedInventory {
+    override fun canExtract(slot: Int, stack: ItemStack, dir: Direction): Boolean = true
+
+    override fun canInsert(slot: Int, stack: ItemStack, dir: Direction?): Boolean = true
+
+    override fun getAvailableSlots(side: Direction): IntArray {
+        val output = mutableListOf<Int>()
+
+        var x = 0
+        items.forEach {
+            output += x
+            ++x
+        }
+
+        return output.toIntArray()
+    }
 }
