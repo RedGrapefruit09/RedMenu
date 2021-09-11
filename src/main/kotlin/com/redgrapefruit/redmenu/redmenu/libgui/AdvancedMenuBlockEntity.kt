@@ -13,7 +13,7 @@ import net.minecraft.util.math.Direction
 /**
  * A reimplementation of menu block entity for use with LibGUI
  */
-class AdvancedMenuBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState, private val size: Int)
+abstract class AdvancedMenuBlockEntity(type: BlockEntityType<*>, pos: BlockPos, state: BlockState, private val size: Int)
     : BlockEntity(type, pos, state), DefaultedSidedInventory {
 
     private val items: DefaultedList<ItemStack> = DefaultedList.ofSize(size)
