@@ -32,9 +32,8 @@ abstract class MenuBlockEntity protected constructor(type: BlockEntityType<*>, p
         Inventories.readNbt(nbt, inventory)
     }
 
-    override fun writeNbt(nbt: NbtCompound): NbtCompound {
+    override fun writeNbt(nbt: NbtCompound) {
         super.writeNbt(nbt)
         Inventories.writeNbt(nbt, inventory)
-        return nbt
     }
 }

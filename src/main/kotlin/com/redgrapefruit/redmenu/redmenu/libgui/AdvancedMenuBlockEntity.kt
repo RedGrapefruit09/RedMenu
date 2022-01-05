@@ -29,8 +29,8 @@ abstract class AdvancedMenuBlockEntity(type: BlockEntityType<*>, pos: BlockPos, 
         Inventories.readNbt(nbt, items)
     }
 
-    override fun writeNbt(nbt: NbtCompound): NbtCompound {
+    override fun writeNbt(nbt: NbtCompound) {
         Inventories.writeNbt(nbt, items)
-        return super.writeNbt(nbt)
+        super.writeNbt(nbt)
     }
 }
