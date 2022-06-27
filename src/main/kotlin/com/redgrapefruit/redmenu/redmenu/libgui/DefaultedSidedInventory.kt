@@ -113,7 +113,7 @@ interface DefaultedSidedInventory : SidedInventory {
         val list = mutableListOf<Int>()
         var x = 0
 
-        getItems().forEach { item ->
+        getItems().forEach { _ ->
             list += x
             ++x
         }

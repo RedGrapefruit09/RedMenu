@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.text.Text
-import net.minecraft.text.TranslatableText
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 
@@ -23,7 +22,7 @@ abstract class MenuBlockEntity protected constructor(type: BlockEntityType<*>, p
     // Embedded inventory represented through a DefaultedList
     protected val inventory: DefaultedList<ItemStack> = DefaultedList.ofSize(size, ItemStack.EMPTY)
 
-    override fun getDisplayName(): Text = TranslatableText(cachedState.block.translationKey)
+    override fun getDisplayName(): Text = Text.translatable(cachedState.block.translationKey)
 
     override fun markDirty() = Unit
 
